@@ -20,9 +20,5 @@ const styles = StyleSheet.create({
     justifyContent:'center',
     alignItems:'center'
   },
-  fontStyle:{
-    fontSize:30,
-    fontWeight:'bold'
-  }
 });
 export default App;

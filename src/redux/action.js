@@ -1,15 +1,22 @@
-import { INCREMENT,DECREMENT} from "../../src/redux/types";
+import { INCREMENT,DECREMENT, CHANGE} from "../../src/redux/types";
 
-export function increment (data){
+const increment =(data)=>{
    
     return{
         type: INCREMENT,
         payload: data
     }
 }
-export function decrement (data){
+const decrement =(data)=>{
     return{
         type: DECREMENT,
         payload: data
     }
 }
+const changeValue =(text)=>{
+    return{
+        type: CHANGE,
+        payload: text
+    }
+}
+export {increment,decrement}

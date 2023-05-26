@@ -1,61 +1,75 @@
-import { StyleSheet, Text, View,TouchableOpacity } from 'react-native';
+import { StyleSheet, Text, View,TouchableOpacity,TextInput } from 'react-native';
 import {React} from 'react';
-import { increment,decrement } from '../../src/redux/action';
+import { increment,decrement,changeValue } from '../../src/redux/action';
 import { useSelector,useDispatch } from 'react-redux';
 
-
 const Home = (props) => {
-
   const number = useSelector((state)=>state.num)
-   const dispatch = useDispatch()
+  const change = useSelector((state)=>state.changeValue)
+  const dispatch = useDispatch()
 
   const onAdd = ()=>{
     dispatch((increment(number)))
-}
+    }
   
   const onDec = ()=>{
     dispatch((decrement(number)))
-  }
+    }
  
   return (
-    <View style={styles.container}>
-      <Text style={styles.fontStyle}>{number}</Text>
-      <View style={{flexDirection:"row",justifyContent:'space-between',alignItems:"center"}}>
-        <TouchableOpacity style = {styles.incButton} onPress={onAdd}>
-          <Text style={{color:'white',fontSize:20}}>Increase</Text>
+    <View style={styles.main}>
+      <Text style={styles.numberStyle}>{number}</Text>
+      <View style={styles.container}>
+        <TouchableOpacity style = {styles.ButtonStyle} onPress={onAdd}>
+          <Text style={styles.btnText}>Increase</Text>
          </TouchableOpacity>
-        <TouchableOpacity style = {styles.decButton} onPress={onDec}>
-          <Text style={{color:'white',fontSize:20}}>Decrease</Text>
+        <TouchableOpacity style = {styles.ButtonStyle} onPress={onDec}>
+          <Text style={styles.btnText}>Decrease</Text>
         </TouchableOpacity>
       </View>
+      <TextInput placeholder='Enter Number'
+          style = {styles.inputField}
+          value = {change}
+          onChangeText={text=>dispatch({type:'CHANGE', payload: text })}
+      /> 
     </View>
   );
 };
 const styles = StyleSheet.create({
-    container:{
-        flex:1,
+    main:{
         justifyContent:'center',
         alignItems:'center'
       },
-      fontStyle:{
+      container:{
+        flexDirection:"row",
+        justifyContent:'space-between',
+        
+      },
+      numberStyle:{
         fontSize:30,
-        fontWeight:'bold'
+        fontWeight:'bold',
+        marginBottom:20,
       },
-      incButton:{
-        backgroundColor:'blue',
+      btnText:{
+        color:'white',
+        fontSize:20,
+        fontWeight:'600'
+      },
+      ButtonStyle:{
+        backgroundColor:'black',
         width:'35%',
         padding:15,
         marginHorizontal:20,
         borderRadius:20,
-        alignItems:"center" 
+        alignItems:"center",  
       },
-      decButton:{
-        backgroundColor:'blue',
-        width:'35%',
-        padding:15,
-        marginHorizontal:20,
-        borderRadius:20,
-        alignItems:'center' 
+      inputField:{
+          borderWidth:1,
+          padding:20,
+          marginTop:20,
+          borderRadius:20,
+          fontSize:20, 
+          width:150
       }
 });
 export default Home;
