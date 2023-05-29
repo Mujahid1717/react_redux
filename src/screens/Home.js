@@ -1,13 +1,19 @@
 import { StyleSheet, Text, View,TouchableOpacity,TextInput } from 'react-native';
 import {React} from 'react';
-import { increment,decrement,changeValue } from '../../src/redux/action';
+import { increment,decrement,changeValue,changeTheme } from '../../src/redux/action';
 import { useSelector,useDispatch } from 'react-redux';
 
 const Home = (props) => {
-  const number = useSelector((state)=>state.num)
-  const change = useSelector((state)=>state.changeValue)
-  const dispatch = useDispatch()
 
+  const dispatch = useDispatch()
+  const number = useSelector((state)=> state.counterReducer.num)
+  const change = useSelector((state)=>state.changeValue)
+  const theme = useSelector((state)=>state)
+  const selectedTheme = theme.ThemeReducer
+
+  // console.log('theme value', selectedTheme)
+
+ 
   const onAdd = ()=>{
     dispatch((increment(number)))
     }
@@ -32,6 +38,17 @@ const Home = (props) => {
           value = {change}
           onChangeText={text=>dispatch({type:'CHANGE', payload: text })}
       /> 
+      <TouchableOpacity style = {styles.btnTheme}
+        onPress={()=> {
+          if(selectedTheme == true){
+            dispatch(changeTheme(false))
+          }else{
+            dispatch(changeTheme(true))
+          }
+        }}   
+      >
+        <Text style={styles.btnText}>Change Theme</Text>
+        </TouchableOpacity>
     </View>
   );
 };
@@ -49,6 +66,7 @@ const styles = StyleSheet.create({
         fontSize:30,
         fontWeight:'bold',
         marginBottom:20,
+        color:'black'
       },
       btnText:{
         color:'white',
@@ -65,11 +83,21 @@ const styles = StyleSheet.create({
       },
       inputField:{
           borderWidth:1,
+          borderColor:'black',
           padding:20,
           marginTop:20,
           borderRadius:20,
           fontSize:20, 
           width:150
-      }
+      },
+      btnTheme:{
+        backgroundColor:'black',
+        width:'60%',
+        padding:15,
+        marginTop:40,
+        marginHorizontal:20,
+        borderRadius:20,
+        alignItems:"center",  
+      },
 });
 export default Home;

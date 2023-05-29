@@ -1,4 +1,4 @@
-import { INCREMENT,DECREMENT, CHANGE} from "../../src/redux/types";
+import { INCREMENT,DECREMENT, CHANGE, CHANGE_THEME} from "../../src/redux/types";
 
 const increment =(data)=>{
    
@@ -19,4 +19,8 @@ const changeValue =(text)=>{
         payload: text
     }
 }
-export {increment,decrement}
+const changeTheme = type => ({
+        type: CHANGE_THEME,
+        payload: type
+})
+export {increment,decrement,changeTheme,changeValue}
