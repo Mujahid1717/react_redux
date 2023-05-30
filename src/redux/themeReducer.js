@@ -1,6 +1,6 @@
 import  {CHANGE_THEME}  from "../../src/redux/types";
 
-export  const ThemeReducer = (state = false, action)=>{
+export  const ThemeReducer = (state = true, action)=>{
     switch (action.type) {
         case CHANGE_THEME: {
 

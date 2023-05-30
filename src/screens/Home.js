@@ -13,7 +13,6 @@ const Home = (props) => {
 
   // console.log('theme value', selectedTheme)
 
- 
   const onAdd = ()=>{
     dispatch((increment(number)))
     }
@@ -23,81 +22,100 @@ const Home = (props) => {
     }
  
   return (
-    <View style={styles.main}>
-      <Text style={styles.numberStyle}>{number}</Text>
+    <View style={styles.main(selectedTheme)}>
+      
+      <Text style={styles.numberStyle(selectedTheme)}>{number}</Text>
       <View style={styles.container}>
-        <TouchableOpacity style = {styles.ButtonStyle} onPress={onAdd}>
-          <Text style={styles.btnText}>Increase</Text>
+        <TouchableOpacity style = {styles.ButtonStyle(selectedTheme)} onPress={onAdd}>
+          <Text style={styles.btnText(selectedTheme)}>Increase</Text>
          </TouchableOpacity>
-        <TouchableOpacity style = {styles.ButtonStyle} onPress={onDec}>
-          <Text style={styles.btnText}>Decrease</Text>
+        <TouchableOpacity style = {styles.ButtonStyle(selectedTheme)} onPress={onDec}>
+          <Text style={styles.btnText(selectedTheme)}>Decrease</Text>
         </TouchableOpacity>
       </View>
       <TextInput placeholder='Enter Number'
-          style = {styles.inputField}
+          style = {styles.inputField(selectedTheme)}
           value = {change}
           onChangeText={text=>dispatch({type:'CHANGE', payload: text })}
       /> 
-      <TouchableOpacity style = {styles.btnTheme}
+      <TouchableOpacity style = {styles.btnTheme(selectedTheme)}
         onPress={()=> {
-          if(selectedTheme == true){
-            dispatch(changeTheme(false))
-          }else{
+          if(selectedTheme == false){
             dispatch(changeTheme(true))
+          }else{
+            dispatch(changeTheme(false))
           }
         }}   
       >
-        <Text style={styles.btnText}>Change Theme</Text>
+        <Text style={styles.btnText(selectedTheme)}>Change Theme</Text>
         </TouchableOpacity>
-    </View>
+        </View>
+    
   );
 };
 const styles = StyleSheet.create({
-    main:{
-        justifyContent:'center',
-        alignItems:'center'
-      },
+
+  main :(main) =>{
+    return{
+      flex:1,
+      justifyContent:'center',
+      alignItems:'center',
+      backgroundColor:main?'white':'black',
+      width:400,
+      }
+    },
       container:{
         flexDirection:"row",
         justifyContent:'space-between',
         
       },
-      numberStyle:{
-        fontSize:30,
+      numberStyle:(numberStyle)=>{
+        return{
+        fontSize:40,
         fontWeight:'bold',
         marginBottom:20,
-        color:'black'
+        color:numberStyle?"black":'white'
+        }
       },
-      btnText:{
-        color:'white',
-        fontSize:20,
-        fontWeight:'600'
+      btnText:(btnText)=>{
+        return{
+          color:btnText?'white':'black',
+          fontSize:20,
+          fontWeight:'600'
+        }
       },
-      ButtonStyle:{
-        backgroundColor:'black',
+      ButtonStyle:(ButtonStyle)=>{
+        return{
+        backgroundColor:ButtonStyle?'black':'white',
         width:'35%',
         padding:15,
         marginHorizontal:20,
         borderRadius:20,
-        alignItems:"center",  
+        alignItems:"center",
+        }  
       },
-      inputField:{
+      inputField:(inputField)=>{
+        return{
           borderWidth:1,
-          borderColor:'black',
+          borderColor:inputField?"black":'white',
+          color:inputField?"black":'white',
           padding:20,
           marginTop:20,
           borderRadius:20,
           fontSize:20, 
           width:150
+        }
       },
-      btnTheme:{
-        backgroundColor:'black',
+      btnTheme:(btnTheme)=>{
+        return{
+        backgroundColor:btnTheme?'black':'white',
         width:'60%',
         padding:15,
         marginTop:40,
         marginHorizontal:20,
         borderRadius:20,
-        alignItems:"center",  
+        alignItems:"center",
+        }  
       },
 });
 export default Home;
