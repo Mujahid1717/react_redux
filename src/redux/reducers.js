@@ -29,4 +29,6 @@ const  counterReducer =(state = init_state,action)=>{
             return{...state}
     }
 }
-export  {counterReducer}
+export  {
+    counterReducer
+}

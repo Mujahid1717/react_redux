@@ -1,8 +1,9 @@
-import { StyleSheet, Text, View,TouchableOpacity,TextInput } from 'react-native';
+import { StyleSheet, Text, View,TouchableOpacity,TextInput, ActivityIndicator } from 'react-native';
 import {React} from 'react';
-import { increment,decrement,changeValue,changeTheme } from '../../src/redux/action';
+import { increment,decrement,changeValue,changeTheme,apiCall} from '../../src/redux/action';
 import { useSelector,useDispatch } from 'react-redux';
 import { colors } from '../config/colors'
+import { ScrollView } from 'react-native';
 
 const Home = (props) => {
 
@@ -10,11 +11,15 @@ const Home = (props) => {
   const number = useSelector((state)=> state.counterReducer.num)
   const change = useSelector((state)=>state.changeValue)
   const theme = useSelector((state)=>state)
-  const selectedTheme = theme.ThemeReducer
 
+  const {
+    loader,
+    data
+  } = theme.apiCallReducer;
   
+  const selectedTheme = theme.ThemeReducer
   const _styles = styles(colors(selectedTheme));
-
+  
   const onAdd = ()=>{
     dispatch((increment(number)))
     }
@@ -24,7 +29,26 @@ const Home = (props) => {
     }
  
   return (
+    <ScrollView>
     <View style={_styles.main}>
+      {
+        loader ? (
+          <View style={{ position: "absolute", top: 0, left: 0, right: 0, bottom: 0, justifyContent: "center", alignItems: "center", backgroundColor: "rgba(0,0,0,0.2)" }}>
+            <ActivityIndicator  size = {'large'} color ="blue"/>
+          </View>
+        ) : null
+      }
+        <TouchableOpacity style = {_styles.btnTheme}
+        onPress={()=> {
+          if(selectedTheme == false){
+            dispatch(changeTheme(true))
+          }else{
+            dispatch(changeTheme(false))
+          }
+        }}   
+      >
+        <Text style={_styles.btnText}>Change Theme</Text>
+        </TouchableOpacity>
       
       <Text style={_styles.numberStyle}>{number}</Text>
       <View style={_styles.container}>
@@ -39,20 +63,13 @@ const Home = (props) => {
           style = {_styles.inputField}
           value = {change}
           onChangeText={text=>dispatch({type:'CHANGE', payload: text })}
-      /> 
-      <TouchableOpacity style = {_styles.btnTheme}
-        onPress={()=> {
-          if(selectedTheme == false){
-            dispatch(changeTheme(true))
-          }else{
-            dispatch(changeTheme(false))
-          }
-        }}   
-      >
-        <Text style={_styles.btnText}>Change Theme</Text>
+        /> 
+        <TouchableOpacity style = {_styles.ButtonStyle} onPress={()=> apiCall()(dispatch)}>
+          <Text style={_styles.btnText}>Call Api</Text>
         </TouchableOpacity>
-        </View>
-    
+        <Text>{JSON.stringify(data, null, 2)}</Text>
+      </View>
+      </ScrollView>
   );
 };
 const styles = (theme) => StyleSheet.create({
@@ -94,7 +111,8 @@ const styles = (theme) => StyleSheet.create({
           marginTop:20,
           borderRadius:20,
           fontSize:20, 
-          width:150
+          width:150,
+          marginBottom:40
       },
       btnTheme: {
         backgroundColor:theme.buttonBackground,
@@ -104,6 +122,7 @@ const styles = (theme) => StyleSheet.create({
         marginHorizontal:20,
         borderRadius:20,
         alignItems:"center",
+        marginBottom:40
       },
 });
 export default Home;
